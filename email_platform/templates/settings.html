@@ -1,0 +1,12 @@
+{% extends "home.html" %}
+
+{% block content %}
+  <h1>Settings</h1>
+	<form action="settings" method="post" />
+		<input type="text" name="accountlogin" />
+		<input type="password" name="accountpassword" />
+		<input type="emailfromname" name="emailname" />
+		<input type="emailfromaddress" name="emailaddress" />
+		<input type="submit" />
+	</form>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "home.html" %}
+
+{% block content %}
+  <table>
+    <caption>Contacts</caption>
+    <thead>
+      <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>E-mail</th>
+      </tr>
+    <thead>
+    <tbody>
+      {% for contact in contacts %}
+      <tr>
+        <td>{{ contact.firstname }}</td><td>{{ contact.lastname }}</td><td>{{
+          contact.emailaddress }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <form action="contact" method="post">
+    <input type="text" name="firstname" />
+    <input type="text" name="lastname" />
+    <input type="email" name="emailaddress" />
+    <input type="submit" />
+  </form>
+{% endblock %}
