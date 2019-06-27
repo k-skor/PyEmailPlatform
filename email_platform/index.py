@@ -39,7 +39,25 @@ def add_contact():
     contacts.create_contact(request.form)
     return '', 204
 
+@app.route("/contact_edit/<int:contact_pk>")
+def edit_contact(contact_pk):
+    c = contacts.get_contact(contact_pk)
+    return render_template('contact_edit.html', title="Edit contact", contact=c)
+
+@app.route("/contact_edit/<int:contact_pk>", methods=['POST'])
+def update_contact(contact_pk):
+    print(request.form)
+    contacts.update_contact(contact_pk, request.form)
+    return '', 204
+
 @app.route("/settings")
 def get_settings():
     u = users.get_user(0)
     return render_template('settings.html', user=u)
+
+@app.route("/settings", methods=['POST'])
+def update_settings():
+    print("hello user POST")
+    print(request.form)
+    users.update_user(0, request.form)
+    return '', 204

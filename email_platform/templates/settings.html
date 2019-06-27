@@ -3,10 +3,12 @@
 {% block content %}
   <h1>Settings</h1>
 	<form action="settings" method="post" />
-		<input type="text" name="accountlogin" />
-		<input type="password" name="accountpassword" />
-		<input type="emailfromname" name="emailname" />
-		<input type="emailfromaddress" name="emailaddress" />
+    <input type="hidden" name="user_pk" value="{{ user.user_pk }}" />
+    Login: <input type="text" name="accountlogin" value="{{ user.accountlogin }}" /><br>
+    Password: <input type="password" name="accountpass" value="{{
+    user.accountpass }}" /><br>
+    Email from name: <input type="text" name="emailfromname" value="{{ user.emailfromname }}" /><br>
+		Email from address: <input type="text" name="emailfromaddress" value="{{ user.emailfromaddress }}"/><br>
 		<input type="submit" />
 	</form>
 {% endblock %}

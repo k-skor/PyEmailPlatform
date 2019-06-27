@@ -1,17 +1,25 @@
 from email_platform import db
 from email_platform.model import user
 
-def get_user(user_pk):
-    u = user.User.query.order_by(user.User.user_pk).all()
+user_list = user.UsersList()
 
-    user_schema = user.UserSchema(many=True)
-    data = user_schema.dump(u).data
-    print('---===---\n{0}\n---===---'.format(data))
+def get_user(user_pk):
+    #u = user.User.query.order_by(user.User.user_pk).all()
+    u = user_list.find_user(user_pk)
+
+    #print('found user {id} {login} {passwd} {emailname} ' \
+    #        '{emailaddress}'.format(id=u.user_pk, login=u.accountlogin,
+    #            passwd=u.accountpass, emailname=u.emailfromname,
+    #            emailaddress=u.emailfromaddress))
+    user_schema = user.UserSchema(strict=True)
+    data, errors = user_schema.dump(u)
+    print('---===---\nget\n{0}\nerrors:{1}\n---===---'.format(data, errors))
     return data
 
 def update_user(user_pk, u):
-    update_user = user.User.query.filter(user.User.user_pk ==
-            user_pk).one_or_none()
+    #update_user = user.User.query.filter(user.User.user_pk ==
+    #        user_pk).one_or_none()
+    update_user = user_list.find_user(user_pk)
 
     login = u.get('accountlogin')
     password = u.get('accountpassword')
@@ -24,12 +32,18 @@ def update_user(user_pk, u):
 
     else:
             schema = user.UserSchema()
-            update = schema.load(u, session=db.session).data
+            new_user = schema.load(u).data
+            #print('---===---\nput\n{0}\nerrors: {1}---===---'.format(new_user,
+            #    errors))
 
-            update.user_pk = update_user.user_pk
+            #print('found user {idx} {login} {passwd} {emailname} ' \
+            #        '{emailaddress}'.format(idx=new_user.user_pk,
+            #            login=new_user.accountlogin,
+            #            passwd=new_user.accountpass, emailname=new_user.emailfromname,
+            #            emailaddress=new_user.emailfromaddress))
+            print(new_user)
+            user_list.remove_user(update_user)
+            user_list.add_user(new_user)
 
-            db.session.merge(update)
-            db.session.commit()
-
-            data = schema.dump(update_user).data
+            data = schema.dump(new_user).data
             return data, 200
