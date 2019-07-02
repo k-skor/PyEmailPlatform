@@ -1,8 +1,6 @@
 from datetime import datetime
 from email_platform import db, ma
 
-from .groups import ContactGroup
-
 class Contact(db.Model):
     __tablename__ = 'contact'
     contact_pk = db.Column(db.Integer, primary_key=True)
@@ -12,6 +10,12 @@ class Contact(db.Model):
     group_id = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.utcnow,
             onupdate=datetime.utcnow)
+
+    def __eq__(self, other):
+        return self.contact_pk == other.contact_pk
+
+    def __repr__(self):
+        return '<Contact(contact_pk={self.contact_pk!r})>'.format(self=self)
 
 class ContactSchema(ma.ModelSchema):
     class Meta:

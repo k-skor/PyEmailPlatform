@@ -1,5 +1,7 @@
 from flask import render_template, jsonify, request
-from email_platform import app, contacts, users
+from email_platform import app, contacts, users, groups
+
+from email_platform.model import contact
 
 """
 contacts = [
@@ -9,6 +11,13 @@ contacts = [
             'adam.nowak@home.pl', 'group_fk': '0' },
 ]
 """
+
+def init_groups():
+    cs = contact.Contact.query.order_by(contact.Contact.contact_pk).all()
+    for c in cs:
+        g = groups.group_list.get_group(c.group_id)
+        if g is not None:
+            groups.add_contact_to_group(c)
 
 @app.route("/")
 def home():
@@ -61,3 +70,8 @@ def update_settings():
     print(request.form)
     users.update_user(0, request.form)
     return '', 204
+
+@app.route("/groups")
+def get_groups():
+    gas = groups.group_list.get_json_formatted_list()
+    return render_template('groups.html', groups=gas)

@@ -1,0 +1,13 @@
+{% extends "home.html" %}
+
+{% block content %}
+  <h1>Groups</h1>
+  {% for group in groups %}
+  <h2>{{ group.name }}</h2>
+  <ul>
+    {% for contact in group.contacts_list %}
+    <li>{{ contact.firstname }} {{ contact.lastname }} {{contact.emailaddress }}</li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+{% endblock %}

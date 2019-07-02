@@ -20,3 +20,5 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 import email_platform.index
+
+email_platform.index.init_groups()

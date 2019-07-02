@@ -1,6 +1,7 @@
 from flask import make_response, abort
 from email_platform import db
 from email_platform.model import contact
+from .groups import add_contact_to_group, change_contact_group
 
 def get_contacts():
     cs = contact.Contact.query.order_by(contact.Contact.contact_pk).all()
@@ -9,6 +10,14 @@ def get_contacts():
     data = contact_schema.dump(cs).data
     print('---===---\n{0}\n---===---'.format(data))
     return data
+
+#def get_contacts_for_group(group_id):
+#    cs = contact.Contact.query.where(contact.Contact.group_id == group_id).order_by(contact.Contact.contact_pk).all()
+#
+#    contact_schema = contact.ContactSchema(many=True)
+#    data = contact_schema.dump(cs).data
+#    print('---===---\n{0}\n---===---'.format(data))
+#    return data
 
 def get_contact(contact_pk):
     c = contact.Contact.query.filter(contact.Contact.contact_pk ==
@@ -39,6 +48,7 @@ def create_contact(c):
     if existing_contact is None:
         schema = contact.ContactSchema()
         new_contact = schema.load(c, session=db.session).data
+        add_contact_to_group(new_contact)
         print(new_contact)
 
         for obj in db.session:
@@ -77,10 +87,16 @@ def update_contact(contact_pk, c):
                     already'.format(fname=fname, lname=lname, emailaddr=emailaddr))
 
     else:
+            old_gid = update_contact.group_id
             schema = contact.ContactSchema()
             update = schema.load(c, session=db.session).data
 
             update.contact_pk = update_contact.contact_pk
+
+            print("handle contact gr change, old {0} -> new \
+                    {1}".format(old_gid, update.group_id))
+            if old_gid != update.group_id:
+                change_contact_group(update, old_gid)
 
             db.session.merge(update)
             db.session.commit()

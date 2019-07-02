@@ -3,11 +3,11 @@
 {% block content %}
   <h1>Contacts</h1>
 
-  <form action="contact_edit" method="post">
+  <form action="{{ contact.contact_pk }}" method="post">
     <input type="hidden" name="contact_pk" value="{{ contact.contact_pk }}" />
     <input type="text" name="firstname" value="{{ contact.firstname }}" />
-    <input type="text" name="lastname"  value="{{ contact.lastname }}"/>
-    <input type="email" name="emailaddress"  value="{{ contact.emailaddress }}"/>
+    <input type="text" name="lastname"  value="{{ contact.lastname }}" />
+    <input type="email" name="emailaddress"  value="{{ contact.emailaddress }} "/>
     <select name="group_id">
       <option value="-1">-</option>
       <option value="0" {% if contact.group_id == 0 %}selected="true"{% endif %}>Early adopters</option>
