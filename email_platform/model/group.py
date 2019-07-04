@@ -46,12 +46,15 @@ class ContactGroupList:
                 return g
         return None
 
-    def get_json_formatted_list(self):
-        grs = []
-        schema = ContactGroupSchema()
+    def get_groups(self):
+        return self.groups.values()
 
-        for g in self.groups.values():
-            gr_data = schema.dump(g).data
-            grs.append(gr_data)
-        return grs
+    #def get_json_formatted_list(self):
+    #    grs = []
+    #    schema = ContactGroupSchema()
+
+    #    for g in self.groups.values():
+    #        gr_data = schema.dump(g).data
+    #        grs.append(gr_data)
+    #    return grs
 

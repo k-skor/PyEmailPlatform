@@ -1,6 +1,7 @@
 from email_platform import db, ma
 #from flask_marshmallow import fields
 from marshmallow import Schema, fields, post_load
+from .email_message import EmailMessage
 
 class User:
     def __init__(self, user_pk, accountlogin, accountpass, emailfromname,
@@ -15,6 +16,10 @@ class User:
 
 #    def __getitem__(self, key):
 #        return self.user_pk
+
+    def __eq__(self, other):
+        return self.user_pk == other.user_pk
+
     def __repr__(self):
         return '<User(user_pk={self.user_pk!r})>'.format(self=self)
 
@@ -35,20 +40,34 @@ class UserSchema(Schema):
         return User(**data)
 
 class UsersList:
-    users = [
-            User(0, "admin", "1234", "K. Skor", "ks0000@home.pl")
+
+    USER_KEY = 'user'
+    EMAIL_MSG_KEY = 'email_msg'
+
+    accounts = [
+            {
+                USER_KEY: User(0, "admin", "1234", "K. Skor", "ks0000@home.pl"),
+                EMAIL_MSG_KEY: EmailMessage("", "", 0)
+            }
     ]
 
-    def find_user(self, user_pk):
-        for u in self.users:
+    def find_account(self, user_pk):
+        for a in self.accounts:
+            u = a[UsersList.USER_KEY]
             print('iterating user: {}'.format(u))
             if u.user_pk == user_pk:
                 print('found for pk={pk}'.format(pk=user_pk))
-                return u
+                return a
         return None
 
-    def remove_user(self, user):
-        self.users.remove(user)
+    #def remove_user(self, user):
+    #    self.users.pop(user, None)
 
-    def add_user(self, user):
-        self.users.append(user);
+    #def add_user(self, user):
+    #    self.users.append(user);
+
+    def replace_user(self, user, new_user):
+        a = self.find_account(user.user_pk)
+        if a is not None:
+            a[UsersList.USER_KEY] = new_user
+

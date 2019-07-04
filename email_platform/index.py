@@ -1,7 +1,8 @@
-from flask import render_template, jsonify, request
+from flask import render_template, jsonify, request, abort
 from email_platform import app, contacts, users, groups
+from email_platform.email_service import send_email
 
-from email_platform.model import contact
+from email_platform.model import contact, user, group, email_message
 
 """
 contacts = [
@@ -73,5 +74,44 @@ def update_settings():
 
 @app.route("/groups")
 def get_groups():
-    gas = groups.group_list.get_json_formatted_list()
-    return render_template('groups.html', groups=gas)
+    #gs = groups.group_list.get_json_formatted_list()
+    gs = groups.group_list.get_groups()
+    gs_schema = group.ContactGroupSchema()
+    gs_data = gs_schema.dump(gs, many=True).data
+    return render_template('groups.html', groups=gs_data)
+
+@app.route("/email_send")
+def get_send_email():
+    #gs = groups.group_list.get_json_formatted_list()
+    gs = groups.group_list.get_groups()
+    gs_schema = group.ContactGroupSchema()
+    gs_data = gs_schema.dump(gs, many=True).data
+    a = users.user_list.find_account(0)
+    em_schema = email_message.EmailMessageSchema()
+    em_data = em_schema.dump(a[user.UsersList.EMAIL_MSG_KEY]).data
+    return render_template('email_template.html', email_msg=em_data,
+            groups=gs_data)
+
+@app.route("/email_send", methods=['POST'])
+def email_send():
+    print(request.form)
+    #send_email_to(
+    #        request.form['email_group_id'],
+    #        request.form['email_subject'],
+    #        request.form['email_body']
+    #)
+    em_schema = email_message.EmailMessageSchema()
+    em = em_schema.load(request.form).data
+    print("loaded email msg: {}".format(em))
+    a = users.user_list.find_account(0)
+    a[user.UsersList.EMAIL_MSG_KEY] = em
+    codes = send_email()
+    error_response = []
+    for (email, code) in codes:
+        if code != 200:
+            error_response.append(email)
+    print("send with error msg: ".join(error_response))
+    if len(error_response) > 0:
+        abort(400, "Failed to send email to \
+                receipients:\n".join(error_response))
+    return '', 204

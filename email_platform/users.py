@@ -5,7 +5,8 @@ user_list = user.UsersList()
 
 def get_user(user_pk):
     #u = user.User.query.order_by(user.User.user_pk).all()
-    u = user_list.find_user(user_pk)
+    account = user_list.find_account(user_pk)
+    u = account[user.UsersList.USER_KEY]
 
     #print('found user {id} {login} {passwd} {emailname} ' \
     #        '{emailaddress}'.format(id=u.user_pk, login=u.accountlogin,
@@ -19,7 +20,8 @@ def get_user(user_pk):
 def update_user(user_pk, u):
     #update_user = user.User.query.filter(user.User.user_pk ==
     #        user_pk).one_or_none()
-    update_user = user_list.find_user(user_pk)
+    account = user_list.find_account(user_pk)
+    update_user = account[user.UsersList.USER_KEY]
 
     login = u.get('accountlogin')
     password = u.get('accountpassword')
@@ -42,8 +44,9 @@ def update_user(user_pk, u):
             #            passwd=new_user.accountpass, emailname=new_user.emailfromname,
             #            emailaddress=new_user.emailfromaddress))
             print(new_user)
-            user_list.remove_user(update_user)
-            user_list.add_user(new_user)
+            #user_list.remove_user(update_user)
+            #user_list.add_user(new_user)
+            user_list.replace_user(update_user, new_user)
 
             data = schema.dump(new_user).data
             return data, 200

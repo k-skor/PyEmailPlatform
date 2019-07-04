@@ -1,7 +1,7 @@
-from email_platform.model import groups
+from email_platform.model import group
 #from contacts import get_contacts_for_group
 
-group_list = groups.ContactGroupList()
+group_list = group.ContactGroupList()
 
 #class GroupAggregation:
 #    name = ""

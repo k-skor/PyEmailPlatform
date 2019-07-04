@@ -1,0 +1,18 @@
+{% extends "home.html" %}
+
+{% block content %}
+  <h1>Email template</h1>
+  <form action="/email_send" method="post">
+		<input name="subject" value="{{ email_msg.subject }}" required><br>
+		<textarea name="body" cols="40" rows="5">{{ email_msg.body }}</textarea>
+    <p>
+      Recipient group: 
+      <select name="recipient_group_id">
+        {% for group in groups %}
+        <option value="{{ group.group_pk }}">{{ group.name }}</option>
+        {% endfor %}
+      </select>
+    </p>
+    <input type="submit" value="Send" />
+  </form>
+{% endblock %}
