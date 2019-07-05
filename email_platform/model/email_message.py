@@ -4,7 +4,7 @@ class EmailMessage:
     def __init__(self, subject, body, recipient_group_id):
         self.subject = subject
         self.body = body
-        self.recipient_group_id = 0
+        self.recipient_group_id = recipient_group_id
 
     def clear(self):
         self.subject = ""

@@ -6,11 +6,15 @@ contacts = [
         { 'firstname': 'Jan', 'lastname': 'Kowalski', 'emailaddress':
             'jan.kowalski@home.pl', 'group_id': '0' },
         { 'firstname': 'Adam', 'lastname': 'Nowak', 'emailaddress':
-            'adam.nowak@home.pl', 'group_id': '0' },
+            'adam.nowak@home.pl', 'group_id': '2' },
+        { 'firstname': 'Jan', 'lastname': 'Śmietana', 'emailaddress':
+            'jan.smietana@home.pl', 'group_id': '1' },
+        { 'firstname': 'Karol', 'lastname': 'Świderski', 'emailaddress':
+            'karol.swiderski@home.pl', 'group_id': '1' },
 ]
 
-if os.path.exists('contacts.db'):
-    os.remove('contacts.db')
+if os.path.exists('db/contacts.db'):
+    os.remove('db/contacts.db')
 
 db.create_all()
 

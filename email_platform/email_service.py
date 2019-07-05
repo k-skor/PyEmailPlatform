@@ -1,4 +1,3 @@
-from email_platform import mail
 from email_platform.model import group, user
 #from flask_mail import Message
 
@@ -35,16 +34,19 @@ def send_email():
                 'name': c.firstname + " " + c.lastname,
                 'email': c.emailaddress
         }
-        r = requests.post(
-                url,
-                data=json.dumps(payload),
-                headers=headers,
-                auth=requests.auth.HTTPBasicAuth(
-                    accountuser.accountlogin,
-                    accountuser.accountpass
+        try:
+            r = requests.post(
+                    url,
+                    data=json.dumps(payload),
+                    headers=headers,
+                    auth=requests.auth.HTTPBasicAuth(
+                        accountuser.accountlogin,
+                        accountuser.accountpass
+                )
             )
-        )
-        request_codes.append((c.emailaddress, r.status_code))
+            request_codes.append((c.emailaddress, r.status_code))
+        except:
+            request_codes.append((c.emailaddress, 0))
     return request_codes
     #msg_sender = None
     #if account.emailaddress:

@@ -109,9 +109,10 @@ def email_send():
     error_response = []
     for (email, code) in codes:
         if code != 200:
+            print("result code {} for email {}".format(code, email))
             error_response.append(email)
-    print("send with error msg: ".join(error_response))
+    print("send with error msg:\n" + (" ".join(error_response)))
     if len(error_response) > 0:
         abort(400, "Failed to send email to \
-                receipients:\n".join(error_response))
+                receipients:\n" + (" ".join(error_response)))
     return '', 204

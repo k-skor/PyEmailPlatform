@@ -9,7 +9,8 @@
       Recipient group: 
       <select name="recipient_group_id">
         {% for group in groups %}
-        <option value="{{ group.group_pk }}">{{ group.name }}</option>
+        <option value="{{ group.group_pk }}" {% if group.group_pk ==
+                email_msg.recipient_group_id %}selected="true"{% endif %}>{{ group.name }}</option>
         {% endfor %}
       </select>
     </p>

@@ -9,7 +9,7 @@ app = Flask(__name__, template_folder="templates")
 app.config.from_mapping(
         SQLALCHEMY_ECHO=True,
         SQLALCHEMY_DATABASE_URI='sqlite:////' + os.path.join(basedir,
-            'contacts.db'),
+            'db/contacts.db'),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
 )
 
