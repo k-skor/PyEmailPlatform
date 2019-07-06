@@ -21,5 +21,5 @@ ma = Marshmallow(app)
 
 import email_platform.index
 
-if os.path.exists('db/contacts.db'):
+if os.path.exists(os.path.join(basedir, 'db/contacts.db')):
     email_platform.index.init_groups()
