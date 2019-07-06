@@ -3,8 +3,8 @@ from email_platform.model import group
 group_list = group.ContactGroupList()
 
 def add_contact_to_group(contact):
-    group = group_list.get_group(contact.group_id)
-    group.contacts_list.append(contact)
+    g = group_list.get_group(contact.group_id)
+    g.contacts_list.append(contact)
 
 def change_contact_group(contact, group_id):
     old_group = group_list.get_group(group_id)

@@ -1,5 +1,6 @@
 from datetime import datetime
 from email_platform import db, ma
+from marshmallow import fields
 
 class Contact(db.Model):
     __tablename__ = 'contact'
@@ -18,6 +19,7 @@ class Contact(db.Model):
         return '<Contact(contact_pk={self.contact_pk!r})>'.format(self=self)
 
 class ContactSchema(ma.ModelSchema):
+    group_id = fields.Integer(missing=0)
     class Meta:
         model = Contact
         sqla_session = db.session
