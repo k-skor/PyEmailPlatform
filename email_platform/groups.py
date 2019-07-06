@@ -1,20 +1,6 @@
 from email_platform.model import group
-#from contacts import get_contacts_for_group
 
 group_list = group.ContactGroupList()
-
-#class GroupAggregation:
-#    name = ""
-#    contacts_list = []
-#
-#def get_aggregate_groups():
-#    aggregate = {}
-#    for (t, g) in group_list.groups:
-#        ga = GroupAggregation()
-#        ga.name = t.value
-#        ga.contacts_list = get_contacts_for_group(g.group_pk)
-#        aggregate[g.group_pk] = ga
-#    return aggregate
 
 def add_contact_to_group(contact):
     group = group_list.get_group(contact.group_id)

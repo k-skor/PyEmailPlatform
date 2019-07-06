@@ -11,14 +11,6 @@ def get_contacts():
     print('---===---\n{0}\n---===---'.format(data))
     return data
 
-#def get_contacts_for_group(group_id):
-#    cs = contact.Contact.query.where(contact.Contact.group_id == group_id).order_by(contact.Contact.contact_pk).all()
-#
-#    contact_schema = contact.ContactSchema(many=True)
-#    data = contact_schema.dump(cs).data
-#    print('---===---\n{0}\n---===---'.format(data))
-#    return data
-
 def get_contact(contact_pk):
     c = contact.Contact.query.filter(contact.Contact.contact_pk ==
             contact_pk).one_or_none()
@@ -32,7 +24,6 @@ def get_contact(contact_pk):
         {contact_pk}'.format(contact_pk=contact_pk))
 
 def create_contact(c):
-    #cpk = c.get('contact_pk')
     print("hello create_contact")
     firstname = c.get('firstname')
     lname = c.get('lastname')

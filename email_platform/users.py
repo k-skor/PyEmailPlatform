@@ -4,22 +4,15 @@ from email_platform.model import user
 user_list = user.UsersList()
 
 def get_user(user_pk):
-    #u = user.User.query.order_by(user.User.user_pk).all()
     account = user_list.find_account(user_pk)
     u = account[user.UsersList.USER_KEY]
 
-    #print('found user {id} {login} {passwd} {emailname} ' \
-    #        '{emailaddress}'.format(id=u.user_pk, login=u.accountlogin,
-    #            passwd=u.accountpass, emailname=u.emailfromname,
-    #            emailaddress=u.emailfromaddress))
     user_schema = user.UserSchema(strict=True)
     data, errors = user_schema.dump(u)
     print('---===---\nget\n{0}\nerrors:{1}\n---===---'.format(data, errors))
     return data
 
 def update_user(user_pk, u):
-    #update_user = user.User.query.filter(user.User.user_pk ==
-    #        user_pk).one_or_none()
     account = user_list.find_account(user_pk)
     update_user = account[user.UsersList.USER_KEY]
 
@@ -35,17 +28,8 @@ def update_user(user_pk, u):
     else:
             schema = user.UserSchema()
             new_user = schema.load(u).data
-            #print('---===---\nput\n{0}\nerrors: {1}---===---'.format(new_user,
-            #    errors))
 
-            #print('found user {idx} {login} {passwd} {emailname} ' \
-            #        '{emailaddress}'.format(idx=new_user.user_pk,
-            #            login=new_user.accountlogin,
-            #            passwd=new_user.accountpass, emailname=new_user.emailfromname,
-            #            emailaddress=new_user.emailfromaddress))
             print(new_user)
-            #user_list.remove_user(update_user)
-            #user_list.add_user(new_user)
             user_list.replace_user(update_user, new_user)
 
             data = schema.dump(new_user).data

@@ -14,8 +14,6 @@ def send_email():
     emailgroup = group_list.get_group(emailmsg.recipient_group_id)
 
     url = "https://api.flypsdm.io/public/api/v1/sendmail"
-    #user = "recruitment@flypsdm.io"
-    #passwd = "surge-is-recruiting-2019"
 
     payload = {
             'from': {
@@ -48,16 +46,4 @@ def send_email():
         except:
             request_codes.append((c.emailaddress, 0))
     return request_codes
-    #msg_sender = None
-    #if account.emailaddress:
-    #    msg_sender = (account.emailfromname, account.emailfromaddress)
-    #else:
-    #    msg_sender = account.emailfromaddress
-    #msg_recipients = [c.emailaddress for c in group.contacts_list]
-    #if len(msg_recipients) > 0 and msg_subject:
-    #    msg = Message(body=msg_body,
-    #            subject=msg_subject,
-    #            sender=msg_sender,
-    #            receipients=msg_recipients)
-    #    mail.send(msg)
 

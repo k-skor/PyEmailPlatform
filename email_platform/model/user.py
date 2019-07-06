@@ -1,5 +1,4 @@
 from email_platform import db, ma
-#from flask_marshmallow import fields
 from marshmallow import Schema, fields, post_load
 from .email_message import EmailMessage
 
@@ -11,22 +10,12 @@ class User:
         self.accountpass = accountpass
         self.emailfromname = emailfromname
         self.emailfromaddress = emailfromaddress
-        #emailtemplate = db.Column(db.String(1024))
-        #emailtemplate_fk = db.Column(db.Integer)
-
-#    def __getitem__(self, key):
-#        return self.user_pk
 
     def __eq__(self, other):
         return self.user_pk == other.user_pk
 
     def __repr__(self):
         return '<User(user_pk={self.user_pk!r})>'.format(self=self)
-
-#class UserSchema(ma.ModelSchema):
-#    class Meta:
-#        model = User
-#        sqla_session = db.session
 
 class UserSchema(Schema):
     user_pk = fields.Integer()
@@ -59,12 +48,6 @@ class UsersList:
                 print('found for pk={pk}'.format(pk=user_pk))
                 return a
         return None
-
-    #def remove_user(self, user):
-    #    self.users.pop(user, None)
-
-    #def add_user(self, user):
-    #    self.users.append(user);
 
     def replace_user(self, user, new_user):
         a = self.find_account(user.user_pk)
